@@ -1,6 +1,30 @@
 <?php
 
+session_start();
+
+if (!isset($_SESSION['student_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $date = $_GET['date'] ?? '';
+
+include "db.php";
+
+$stmt = $db->prepare(
+    "SELECT *
+     FROM todo
+     WHERE student_id = ?
+     AND date = ?
+     ORDER BY time"
+);
+
+$stmt->execute([
+    $_SESSION['student_id'],
+    $date
+]);
+
+$todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -21,15 +45,42 @@ $date = $_GET['date'] ?? '';
     <h2>タスク</h2>
 
     <div>
-        <p>タスク1</p>
-        <p>タスク2</p>
+
+        <?php foreach ($todos as $todo): ?>
+
+            <?php if ($todo['subject'] !== null): ?>
+
+                <p>
+                    <a href="detail.php?id=<?= $todo['id'] ?>">
+                        <?= htmlspecialchars($todo['title']) ?>
+                        （<?= htmlspecialchars($todo['subject']) ?>）
+                    </a>
+                </p>
+
+            <?php endif; ?>
+
+        <?php endforeach; ?>
+
     </div>
 
     <h2>スケジュール</h2>
 
     <div>
-        <p>スケジュール1</p>
-        <p>スケジュール2</p>
+
+        <?php foreach ($todos as $todo): ?>
+
+            <?php if ($todo['subject'] === null): ?>
+
+                <p>
+                    <a href="detail.php?id=<?= $todo['id'] ?>">
+                        <?= htmlspecialchars($todo['title']) ?>
+                    </a>
+                </p>
+
+            <?php endif; ?>
+
+        <?php endforeach; ?>
+
     </div>
 
     <a href="index.php">戻る</a>
