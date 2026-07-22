@@ -51,7 +51,17 @@ $todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if ($todo['subject'] !== null): ?>
 
                 <p>
-                    <a href="detail.php?id=<?= $todo['id'] ?>">
+                    <input
+                        type="checkbox"
+                        class="complete-checkbox"
+                        data-id="<?= $todo['id'] ?>"
+                        <?= $todo['completed'] == 1 ? 'checked' : '' ?>
+                    >
+
+                    <a
+                        href="detail.php?id=<?= $todo['id'] ?>"
+                        style="<?= $todo['completed'] == 1 ? 'text-decoration: line-through;' : '' ?>"
+                    >
                         <?= htmlspecialchars($todo['title']) ?>
                         （<?= htmlspecialchars($todo['subject']) ?>）
                     </a>
@@ -72,7 +82,17 @@ $todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if ($todo['subject'] === null): ?>
 
                 <p>
-                    <a href="detail.php?id=<?= $todo['id'] ?>">
+                    <input
+                        type="checkbox"
+                        class="complete-checkbox"
+                        data-id="<?= $todo['id'] ?>"
+                        <?= $todo['completed'] == 1 ? 'checked' : '' ?>
+                    >
+
+                    <a
+                        href="detail.php?id=<?= $todo['id'] ?>"
+                        style="<?= $todo['completed'] == 1 ? 'text-decoration: line-through;' : '' ?>"
+                    >
                         <?= htmlspecialchars($todo['title']) ?>
                     </a>
                 </p>
@@ -86,6 +106,38 @@ $todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="index.php">戻る</a>
 
     <a href="add.php?date=<?= urlencode($date) ?>">追加</a>
+
+    <script>
+
+        const checkboxes = document.querySelectorAll('.complete-checkbox');
+
+        checkboxes.forEach(function(checkbox) {
+
+            checkbox.addEventListener('change', function() {
+
+                const todoTitle = this.parentElement.querySelector('a');
+
+                if (this.checked) {
+                    todoTitle.style.textDecoration = 'line-through';
+                } else {
+                    todoTitle.style.textDecoration = 'none';
+                }
+
+                fetch('complete.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body:
+                        'id=' + encodeURIComponent(this.dataset.id) +
+                        '&completed=' + (this.checked ? '1' : '0')
+                });
+
+            });
+
+        });
+
+    </script>
 
 </body>
 </html>

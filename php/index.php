@@ -1,3 +1,34 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['student_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+include "db.php";
+
+$stmt = $db->prepare(
+    "SELECT date, title
+     FROM todo
+     WHERE student_id = ?
+     AND completed = 0"
+);
+
+$stmt->execute([
+    $_SESSION['student_id']
+]);
+
+$todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$todoByDate = [];
+
+foreach ($todos as $todo) {
+    $todoByDate[$todo['date']][] = $todo['title'];
+}
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -25,7 +56,24 @@
 
         <tr>
             <td></td>
-            <td><a href="date.php?date=2026-06-01">1</a></td>
+
+            <td>
+                <a href="date.php?date=2026-06-01">1</a>
+
+                <?php if (isset($todoByDate['2026-06-01'])): ?>
+
+                    <?php foreach ($todoByDate['2026-06-01'] as $title): ?>
+
+                        <div>
+                            <?= htmlspecialchars($title) ?>
+                        </div>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </td>
+
             <td>2</td>
             <td>3</td>
             <td>4</td>
