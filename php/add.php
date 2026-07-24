@@ -1,5 +1,3 @@
-<!-- データを追加する -->
-
 <?php
 
 session_start();
@@ -24,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $subject = $_POST['subject'] ?? '';
         $start_date = $_POST['start_date'] ?? '';
         $time = $_POST['deadline'] ?? '';
+        $end_time = null;
         $note = $_POST['task_note'] ?? '';
 
     } else {
@@ -32,14 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $subject = null;
         $start_date = null;
         $time = $_POST['start_time'] ?? '';
+        $end_time = $_POST['end_time'] ?? '';
         $note = $_POST['schedule_note'] ?? '';
 
     }
 
     $stmt = $db->prepare(
         "INSERT INTO todo
-        (student_id, title, subject, date, start_date, time, note)
-        VALUES (?, ?, ?, ?, ?, ?, ?)"
+        (student_id, title, subject, date, start_date, time, end_time, note)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     $stmt->execute([
@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $date,
         $start_date,
         $time,
+        $end_time,
         $note
     ]);
 
@@ -90,40 +91,53 @@ $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>追加</title>
 
-
-<link rel="stylesheet" href="../css/style.css">
-
-
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-
 
 <h1><?= htmlspecialchars($date) ?></h1>
 
 <form action="add.php" method="post">
 
-    <input type="hidden" name="date" value="<?= htmlspecialchars($date) ?>">
+    <input
+        type="hidden"
+        name="date"
+        value="<?= htmlspecialchars($date) ?>"
+    >
 
     <p>
         <label>
-            <input type="radio" name="type" value="task" checked>
+            <input
+                type="radio"
+                name="type"
+                value="task"
+                checked
+            >
             タスク
         </label>
 
         <label>
-            <input type="radio" name="type" value="schedule">
+            <input
+                type="radio"
+                name="type"
+                value="schedule"
+            >
             スケジュール
         </label>
     </p>
 
     <!-- タスクの入力欄 -->
+
     <div id="task-form">
 
         <p>
             <label>
                 タイトル：
-                <input type="text" name="task_title">
+                <input
+                    type="text"
+                    name="task_title"
+                >
             </label>
         </p>
 
@@ -131,11 +145,17 @@ $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <label>
                 科目：
                 <select name="subject">
+
                     <?php foreach ($subjects as $subject): ?>
-                        <option value="<?= htmlspecialchars($subject['subject']) ?>">
+
+                        <option
+                            value="<?= htmlspecialchars($subject['subject']) ?>"
+                        >
                             <?= htmlspecialchars($subject['subject']) ?>
                         </option>
+
                     <?php endforeach; ?>
+
                 </select>
             </label>
         </p>
@@ -143,14 +163,20 @@ $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <p>
             <label>
                 締切：
-                <input type="time" name="deadline">
+                <input
+                    type="time"
+                    name="deadline"
+                >
             </label>
         </p>
 
         <p>
             <label>
                 着手予定日：
-                <input type="date" name="start_date">
+                <input
+                    type="date"
+                    name="start_date"
+                >
             </label>
         </p>
 
@@ -165,21 +191,38 @@ $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <!-- スケジュールの入力欄 -->
-    <div id="schedule-form" style="display: none;">
+
+    <div
+        id="schedule-form"
+        style="display: none;"
+    >
 
         <p>
             <label>
                 タイトル：
-                <input type="text" name="schedule_title">
+                <input
+                    type="text"
+                    name="schedule_title"
+                >
             </label>
         </p>
 
         <p>
             <label>
                 時間：
-                <input type="time" name="start_time">
+
+                <input
+                    type="time"
+                    name="start_time"
+                >
+
                 ～
-                <input type="time" name="end_time">
+
+                <input
+                    type="time"
+                    name="end_time"
+                >
+
             </label>
         </p>
 
@@ -193,32 +236,47 @@ $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     </div>
 
-    <button type="submit">追加</button>
+    <button type="submit">
+        追加
+    </button>
 
 </form>
 
-<a href="date.php?date=<?= urlencode($date) ?>">戻る</a>
+<a href="date.php?date=<?= urlencode($date) ?>">
+    戻る
+</a>
 
 <script>
 
-    const taskRadio = document.querySelector('input[value="task"]');
-    const scheduleRadio = document.querySelector('input[value="schedule"]');
+    const taskRadio =
+        document.querySelector('input[value="task"]');
 
-    const taskForm = document.getElementById('task-form');
-    const scheduleForm = document.getElementById('schedule-form');
+    const scheduleRadio =
+        document.querySelector('input[value="schedule"]');
+
+    const taskForm =
+        document.getElementById('task-form');
+
+    const scheduleForm =
+        document.getElementById('schedule-form');
 
     taskRadio.addEventListener('change', function() {
+
         taskForm.style.display = 'block';
+
         scheduleForm.style.display = 'none';
+
     });
 
     scheduleRadio.addEventListener('change', function() {
+
         taskForm.style.display = 'none';
+
         scheduleForm.style.display = 'block';
+
     });
 
 </script>
-
 
 </body>
 </html>
