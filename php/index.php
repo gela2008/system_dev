@@ -38,6 +38,31 @@ $stmt->execute([
 
 $todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$today = date('Y-m-d');
+$tomorrow = date('Y-m-d', strtotime('+1 day'));
+
+$noticeStmt = $db->prepare(
+    "SELECT id, title, subject, date, start_date
+     FROM todo
+     WHERE student_id = ?
+     AND completed = 0
+     AND (
+         start_date = ?
+         OR date = ?
+         OR date = ?
+     )
+     ORDER BY date"
+);
+
+$noticeStmt->execute([
+    $_SESSION['student_id'],
+    $today,
+    $today,
+    $tomorrow
+]);
+
+$notices = $noticeStmt->fetchAll(PDO::FETCH_ASSOC);
+
 $todoByDate = [];
 
 foreach ($todos as $todo) {
@@ -82,6 +107,23 @@ foreach ($todos as $todo) {
 </head>
 
 <body>
+    <div class="notice-area">
+
+        <a href="notice.php" class="notice-link">
+
+            ✉️
+
+            <?php if (!empty($notices)): ?>
+
+                <span class="notice-count">
+                    <?= count($notices) ?>
+                </span>
+
+            <?php endif; ?>
+
+        </a>
+
+    </div>
 
     <div class="calendar-header">
 
