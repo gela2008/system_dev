@@ -106,9 +106,20 @@ body {
     text-align: left;
     margin-top: 4px;
     padding: 4px 6px;
-    background-color: #f0f2ff;
     border-radius: 4px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+/* タスク */
+.calendar-task {
+    background-color: #fff3cd;
+    border-left: 4px solid #f0ad4e;
+}
+
+/* スケジュール */
+.calendar-schedule {
+    background-color: #d9f0ff;
+    border-left: 4px solid #5bc0de;
 }

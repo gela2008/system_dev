@@ -26,7 +26,7 @@ if ($month > 12) {
 include "db.php";
 
 $stmt = $db->prepare(
-    "SELECT date, title
+    "SELECT date, title, subject
      FROM todo
      WHERE student_id = ?
      AND completed = 0"
@@ -41,10 +41,16 @@ $todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $todoByDate = [];
 
 foreach ($todos as $todo) {
-    $todoByDate[$todo['date']][] = $todo['title'];
+
+    $todoByDate[$todo['date']][] = [
+        'title' => $todo['title'],
+        'subject' => $todo['subject']
+    ];
+
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -72,6 +78,7 @@ foreach ($todos as $todo) {
     </div>
 
     <table class="calendar">
+
         <tr>
             <th>日</th>
             <th>月</th>
@@ -110,12 +117,14 @@ foreach ($todos as $todo) {
                     <?php else: ?>
 
                         <?php
+
                         $date = sprintf(
                             '%04d-%02d-%02d',
                             $year,
                             $month,
                             $day
                         );
+
                         ?>
 
                         <td>
@@ -126,11 +135,21 @@ foreach ($todos as $todo) {
 
                             <?php if (isset($todoByDate[$date])): ?>
 
-                                <?php foreach ($todoByDate[$date] as $title): ?>
+                                <?php foreach ($todoByDate[$date] as $todo): ?>
 
-                                    <div>
-                                        <?= htmlspecialchars($title) ?>
-                                    </div>
+                                    <?php if ($todo['subject'] !== null): ?>
+
+                                        <div class="calendar-task">
+                                            📚 <?= htmlspecialchars($todo['title']) ?>
+                                        </div>
+
+                                    <?php else: ?>
+
+                                        <div class="calendar-schedule">
+                                            📅 <?= htmlspecialchars($todo['title']) ?>
+                                        </div>
+
+                                    <?php endif; ?>
 
                                 <?php endforeach; ?>
 
@@ -147,6 +166,7 @@ foreach ($todos as $todo) {
             </tr>
 
         <?php endwhile; ?>
+
     </table>
 
 </body>
