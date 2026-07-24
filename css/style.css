@@ -1,22 +1,73 @@
 @charset "utf-8";
 
+/* 全体 */
+body {
+    margin: 0;
+    padding: 30px;
+    background-color: #f7f8fc;
+    font-family: sans-serif;
+    color: #333;
+}
+
+/* カレンダー上部 */
+.calendar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.calendar-header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+/* 月切り替えボタン */
+.calendar-header a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #333;
+    text-decoration: none;
+    font-size: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header a:hover {
+    background-color: #eeeeee;
+}
+
 /* カレンダー */
 .calendar {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     table-layout: fixed;
 }
 
+/* 曜日・日付セル */
 .calendar th,
 .calendar td {
-    border: 1px solid #ccc;
-    text-align: center;
+    border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .calendar th {
     height: 40px;
+    background-color: #f0f1f5;
+    text-align: center;
+    font-weight: bold;
 }
 
 .calendar td {
@@ -25,25 +76,39 @@
     padding: 8px;
 }
 
-.calendar td a {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
+/* カレンダーの外側の線を整える */
+.calendar th:last-child,
+.calendar td:last-child {
+    border-right: none;
 }
 
+.calendar tr:last-child td {
+    border-bottom: none;
+}
+
+/* 日付リンク */
+.calendar td > a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* 日付にマウスを乗せたとき */
+.calendar td > a:hover {
+    text-decoration: underline;
+}
+
+/* 予定タイトル */
 .calendar td div {
-    font-size: 14px;
+    font-size: 13px;
     text-align: left;
     margin-top: 4px;
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-}
-
-.calendar-header h1 {
-    margin: 0;
+    padding: 4px 6px;
+    background-color: #f0f2ff;
+    border-radius: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
