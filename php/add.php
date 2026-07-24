@@ -2,7 +2,83 @@
 
 <?php
 
+session_start();
+
+if (!isset($_SESSION['student_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+include "db.php";
+
 $date = $_GET['date'] ?? '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $type = $_POST['type'] ?? '';
+    $date = $_POST['date'] ?? '';
+
+    if ($type === 'task') {
+
+        $title = $_POST['task_title'] ?? '';
+        $subject = $_POST['subject'] ?? '';
+        $start_date = $_POST['start_date'] ?? '';
+        $time = $_POST['deadline'] ?? '';
+        $note = $_POST['task_note'] ?? '';
+
+    } else {
+
+        $title = $_POST['schedule_title'] ?? '';
+        $subject = null;
+        $start_date = null;
+        $time = $_POST['start_time'] ?? '';
+        $note = $_POST['schedule_note'] ?? '';
+
+    }
+
+    $stmt = $db->prepare(
+        "INSERT INTO todo
+        (student_id, title, subject, date, start_date, time, note)
+        VALUES (?, ?, ?, ?, ?, ?, ?)"
+    );
+
+    $stmt->execute([
+        $_SESSION['student_id'],
+        $title,
+        $subject,
+        $date,
+        $start_date,
+        $time,
+        $note
+    ]);
+
+    header("Location: date.php?date=" . urlencode($date));
+    exit;
+}
+
+$stmt = $db->prepare(
+    "SELECT grade
+     FROM user
+     WHERE student_id = ?"
+);
+
+$stmt->execute([$_SESSION['student_id']]);
+
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$grade = $user['grade'];
+
+$stmt = $db->prepare(
+    "SELECT subject
+     FROM subject
+     WHERE grade = ?
+     AND term = '前期'
+     ORDER BY subject"
+);
+
+$stmt->execute([$grade]);
+
+$subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -53,6 +129,19 @@ $date = $_GET['date'] ?? '';
 
         <p>
             <label>
+                科目：
+                <select name="subject">
+                    <?php foreach ($subjects as $subject): ?>
+                        <option value="<?= htmlspecialchars($subject['subject']) ?>">
+                            <?= htmlspecialchars($subject['subject']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+        </p>
+
+        <p>
+            <label>
                 締切：
                 <input type="time" name="deadline">
             </label>
@@ -61,7 +150,7 @@ $date = $_GET['date'] ?? '';
         <p>
             <label>
                 着手予定日：
-                <input type="month" name="start_date">
+                <input type="date" name="start_date">
             </label>
         </p>
 

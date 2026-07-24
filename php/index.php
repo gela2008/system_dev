@@ -7,6 +7,22 @@ if (!isset($_SESSION['student_id'])) {
     exit;
 }
 
+$year = $_GET['year'] ?? 2026;
+$month = $_GET['month'] ?? 6;
+
+$year = (int)$year;
+$month = (int)$month;
+
+if ($month < 1) {
+    $year--;
+    $month = 12;
+}
+
+if ($month > 12) {
+    $year++;
+    $month = 1;
+}
+
 include "db.php";
 
 $stmt = $db->prepare(
@@ -41,9 +57,21 @@ foreach ($todos as $todo) {
 
 <body>
 
-    <h1>6月</h1>
+    <div class="calendar-header">
 
-    <table border="1">
+        <a href="index.php?year=<?= $year ?>&month=<?= $month - 1 ?>">
+            ＜
+        </a>
+
+        <h1><?= $year ?>年<?= $month ?>月</h1>
+
+        <a href="index.php?year=<?= $year ?>&month=<?= $month + 1 ?>">
+            ＞
+        </a>
+
+    </div>
+
+    <table class="calendar">
         <tr>
             <th>日</th>
             <th>月</th>
@@ -54,72 +82,71 @@ foreach ($todos as $todo) {
             <th>土</th>
         </tr>
 
-        <tr>
-            <td></td>
+        <?php
 
-            <td>
-                <a href="date.php?date=2026-06-01">1</a>
+        $firstDay = new DateTime("$year-$month-01");
 
-                <?php if (isset($todoByDate['2026-06-01'])): ?>
+        $startWeekday = (int)$firstDay->format('w');
 
-                    <?php foreach ($todoByDate['2026-06-01'] as $title): ?>
+        $daysInMonth = (int)$firstDay->format('t');
 
-                        <div>
-                            <?= htmlspecialchars($title) ?>
-                        </div>
+        $day = 1;
 
-                    <?php endforeach; ?>
+        while ($day <= $daysInMonth):
 
-                <?php endif; ?>
+        ?>
 
-            </td>
+            <tr>
 
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-        </tr>
+                <?php for ($i = 0; $i < 7; $i++): ?>
 
-        <tr>
-            <td>7</td>
-            <td>8</td>
-            <td>9</td>
-            <td>10</td>
-            <td>11</td>
-            <td>12</td>
-            <td>13</td>
-        </tr>
+                    <?php if (
+                        ($day === 1 && $i < $startWeekday)
+                        || $day > $daysInMonth
+                    ): ?>
 
-        <tr>
-            <td>14</td>
-            <td>15</td>
-            <td>16</td>
-            <td>17</td>
-            <td>18</td>
-            <td>19</td>
-            <td>20</td>
-        </tr>
+                        <td></td>
 
-        <tr>
-            <td>21</td>
-            <td>22</td>
-            <td>23</td>
-            <td>24</td>
-            <td>25</td>
-            <td>26</td>
-            <td>27</td>
-        </tr>
+                    <?php else: ?>
 
-        <tr>
-            <td>28</td>
-            <td>29</td>
-            <td>30</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                        <?php
+                        $date = sprintf(
+                            '%04d-%02d-%02d',
+                            $year,
+                            $month,
+                            $day
+                        );
+                        ?>
+
+                        <td>
+
+                            <a href="date.php?date=<?= $date ?>">
+                                <?= $day ?>
+                            </a>
+
+                            <?php if (isset($todoByDate[$date])): ?>
+
+                                <?php foreach ($todoByDate[$date] as $title): ?>
+
+                                    <div>
+                                        <?= htmlspecialchars($title) ?>
+                                    </div>
+
+                                <?php endforeach; ?>
+
+                            <?php endif; ?>
+
+                        </td>
+
+                        <?php $day++; ?>
+
+                    <?php endif; ?>
+
+                <?php endfor; ?>
+
+            </tr>
+
+        <?php endwhile; ?>
     </table>
 
 </body>
