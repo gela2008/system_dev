@@ -107,9 +107,11 @@ body {
     margin-top: 4px;
     padding: 4px 6px;
     border-radius: 4px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
+    /* 長い文字を折り返す */
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 /* タスク */
@@ -122,4 +124,10 @@ body {
 .calendar-schedule {
     background-color: #d9f0ff;
     border-left: 4px solid #5bc0de;
+}
+
+/* 着手予定 */
+.calendar-start {
+    background-color: #ffe0eb;
+    border-left: 4px solid #ff8fab;
 }

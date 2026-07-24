@@ -26,7 +26,7 @@ if ($month > 12) {
 include "db.php";
 
 $stmt = $db->prepare(
-    "SELECT date, title, subject
+    "SELECT id, date, start_date, title, subject
      FROM todo
      WHERE student_id = ?
      AND completed = 0"
@@ -42,10 +42,30 @@ $todoByDate = [];
 
 foreach ($todos as $todo) {
 
+    // 締切日
     $todoByDate[$todo['date']][] = [
+        'id' => $todo['id'],
         'title' => $todo['title'],
-        'subject' => $todo['subject']
+        'subject' => $todo['subject'],
+        'date' => $todo['date'],
+        'type' => 'deadline'
     ];
+
+    // 着手予定日
+    if (
+        $todo['subject'] !== null
+        && !empty($todo['start_date'])
+    ) {
+
+        $todoByDate[$todo['start_date']][] = [
+            'id' => $todo['id'],
+            'title' => $todo['title'],
+            'subject' => $todo['subject'],
+            'date' => $todo['date'],
+            'type' => 'start'
+        ];
+
+    }
 
 }
 
@@ -137,16 +157,47 @@ foreach ($todos as $todo) {
 
                                 <?php foreach ($todoByDate[$date] as $todo): ?>
 
-                                    <?php if ($todo['subject'] !== null): ?>
+                                    <?php if ($todo['type'] === 'start'): ?>
+
+                                        <div class="calendar-start">
+
+                                            <div>
+                                                📝 着手予定：
+                                                <?= htmlspecialchars($todo['title']) ?>
+                                            </div>
+
+                                            <small>
+                                                締切：
+                                                <?= date(
+                                                    'n月j日',
+                                                    strtotime($todo['date'])
+                                                ) ?>
+                                            </small>
+
+                                            <small>
+                                                （<?= htmlspecialchars($todo['subject']) ?>）
+                                            </small>
+
+                                        </div>
+
+                                    <?php elseif ($todo['subject'] !== null): ?>
 
                                         <div class="calendar-task">
-                                            📚 <?= htmlspecialchars($todo['title']) ?>
+
+                                            📚
+                                            <?= htmlspecialchars($todo['title']) ?>
+
+                                            （<?= htmlspecialchars($todo['subject']) ?>）
+
                                         </div>
 
                                     <?php else: ?>
 
                                         <div class="calendar-schedule">
-                                            📅 <?= htmlspecialchars($todo['title']) ?>
+
+                                            📅
+                                            <?= htmlspecialchars($todo['title']) ?>
+
                                         </div>
 
                                     <?php endif; ?>
