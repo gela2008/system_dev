@@ -9,6 +9,9 @@ if (!isset($_SESSION['student_id'])) {
 
 $date = $_GET['date'] ?? '';
 
+$year = date('Y', strtotime($date));
+$month = date('m', strtotime($date));
+
 include "db.php";
 
 $stmt = $db->prepare(
@@ -103,9 +106,13 @@ $todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     </div>
 
-    <a href="index.php">戻る</a>
+    <a href="index.php?year=<?= $year ?>&month=<?= $month ?>">
+        戻る
+    </a>
 
-    <a href="add.php?date=<?= urlencode($date) ?>">追加</a>
+    <a href="add.php?date=<?= urlencode($date) ?>">
+        追加
+    </a>
 
     <script>
 
