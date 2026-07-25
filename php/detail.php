@@ -36,92 +36,139 @@ if (!$todo) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>詳細</title>
+
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <h1><?= htmlspecialchars($todo['title']) ?></h1>
+    <div class="page-container">
 
-    <?php if ($todo['subject'] !== null): ?>
+        <div class="detail-card">
 
-        <p>種類：タスク</p>
+            <h1>
+                <?= htmlspecialchars($todo['title']) ?>
+            </h1>
 
-        <p>
-            科目：
-            <?= htmlspecialchars($todo['subject']) ?>
-        </p>
 
-        <p>
-            締切：
-            <?= htmlspecialchars($todo['date']) ?>
-            <?= htmlspecialchars($todo['time']) ?>
-        </p>
+            <?php if ($todo['subject'] !== null): ?>
 
-        <p>
-            着手予定日：
-            <?= htmlspecialchars($todo['start_date']) ?>
-        </p>
+                <div class="detail-item">
+                    <span>種類</span>
+                    <strong>タスク</strong>
+                </div>
 
-    <?php else: ?>
+                <div class="detail-item">
+                    <span>科目</span>
+                    <strong>
+                        <?= htmlspecialchars($todo['subject']) ?>
+                    </strong>
+                </div>
 
-        <p>種類：スケジュール</p>
+                <div class="detail-item">
+                    <span>締切</span>
+                    <strong>
+                        <?= htmlspecialchars($todo['date']) ?>
+                        <?= htmlspecialchars($todo['time']) ?>
+                    </strong>
+                </div>
 
-        <p>
-            日付：
-            <?= htmlspecialchars($todo['date']) ?>
-        </p>
+                <div class="detail-item">
+                    <span>着手予定日</span>
+                    <strong>
+                        <?= htmlspecialchars($todo['start_date']) ?>
+                    </strong>
+                </div>
 
-        <p>
-            時間：
-            <?= htmlspecialchars($todo['time']) ?>
 
-            <?php if (!empty($todo['end_time'])): ?>
+            <?php else: ?>
 
-                ～
-                <?= htmlspecialchars($todo['end_time']) ?>
+                <div class="detail-item">
+                    <span>種類</span>
+                    <strong>スケジュール</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>日付</span>
+                    <strong>
+                        <?= htmlspecialchars($todo['date']) ?>
+                    </strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>時間</span>
+                    <strong>
+
+                        <?= htmlspecialchars($todo['time']) ?>
+
+                        <?php if (!empty($todo['end_time'])): ?>
+
+                            ～
+                            <?= htmlspecialchars($todo['end_time']) ?>
+
+                        <?php endif; ?>
+
+                    </strong>
+                </div>
 
             <?php endif; ?>
 
-        </p>
 
-    <?php endif; ?>
+            <div class="detail-note">
 
-    <p>備考：</p>
+                <h3>備考</h3>
 
-    <p>
-        <?= nl2br(htmlspecialchars($todo['note'])) ?>
-    </p>
+                <p>
+                    <?= nl2br(htmlspecialchars($todo['note'])) ?>
+                </p>
 
-    <p>
-        <a href="date.php?date=<?= urlencode($todo['date']) ?>">
-            一覧に戻る
-        </a>
-    </p>
+            </div>
 
-    <p>
-        <a href="edit.php?id=<?= $todo['id'] ?>">
-            編集
-        </a>
-    </p>
 
-    <form
-        action="delete.php"
-        method="post"
-        onsubmit="return confirm('この予定を削除してもよろしいですか？');"
-    >
+            <div class="action-area">
 
-        <input
-            type="hidden"
-            name="id"
-            value="<?= htmlspecialchars($todo['id']) ?>"
-        >
+                <a
+                    href="date.php?date=<?= urlencode($todo['date']) ?>"
+                    class="button back-button"
+                >
+                    一覧に戻る
+                </a>
 
-        <button type="submit">
-            削除
-        </button>
+                <a
+                    href="edit.php?id=<?= $todo['id'] ?>"
+                    class="button"
+                >
+                    編集
+                </a>
 
-    </form>
+                <form
+                    action="delete.php"
+                    method="post"
+                    onsubmit="return confirm('この予定を削除してもよろしいですか？');"
+                >
+
+                    <input
+                        type="hidden"
+                        name="id"
+                        value="<?= htmlspecialchars($todo['id']) ?>"
+                    >
+
+                    <button
+                        type="submit"
+                        class="delete-button"
+                    >
+                        削除
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
 </html>

@@ -84,199 +84,291 @@ $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-
 <html lang="ja">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>追加</title>
 
     <link rel="stylesheet" href="../css/style.css">
+
 </head>
 
 <body>
 
-<h1><?= htmlspecialchars($date) ?></h1>
+    <div class="page-container">
 
-<form action="add.php" method="post">
+        <div class="edit-card">
 
-    <input
-        type="hidden"
-        name="date"
-        value="<?= htmlspecialchars($date) ?>"
-    >
+            <h1><?= htmlspecialchars($date) ?></h1>
 
-    <p>
-        <label>
-            <input
-                type="radio"
-                name="type"
-                value="task"
-                checked
+
+            <div class="type-select">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="type-select"
+                        value="task"
+                        checked
+                    >
+                    タスク
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="type-select"
+                        value="schedule"
+                    >
+                    スケジュール
+                </label>
+
+            </div>
+
+
+            <form
+                action="add.php"
+                method="post"
             >
-            タスク
-        </label>
 
-        <label>
-            <input
-                type="radio"
-                name="type"
-                value="schedule"
-            >
-            スケジュール
-        </label>
-    </p>
-
-    <!-- タスクの入力欄 -->
-
-    <div id="task-form">
-
-        <p>
-            <label>
-                タイトル：
                 <input
-                    type="text"
-                    name="task_title"
+                    type="hidden"
+                    name="date"
+                    value="<?= htmlspecialchars($date) ?>"
                 >
-            </label>
-        </p>
 
-        <p>
-            <label>
-                科目：
-                <select name="subject">
 
-                    <?php foreach ($subjects as $subject): ?>
+                <input
+                    type="hidden"
+                    name="type"
+                    id="type"
+                    value="task"
+                >
 
-                        <option
-                            value="<?= htmlspecialchars($subject['subject']) ?>"
+
+                <div id="task-form">
+
+                    <h2>タスク</h2>
+
+
+                    <div class="form-item">
+
+                        <label for="task_title">
+                            タイトル
+                        </label>
+
+                        <input
+                            type="text"
+                            id="task_title"
+                            name="task_title"
+                            required
                         >
-                            <?= htmlspecialchars($subject['subject']) ?>
-                        </option>
 
-                    <?php endforeach; ?>
+                    </div>
 
-                </select>
-            </label>
-        </p>
 
-        <p>
-            <label>
-                締切：
-                <input
-                    type="time"
-                    name="deadline"
+                    <div class="form-item">
+
+                        <label for="subject">
+                            科目
+                        </label>
+
+                        <select
+                            id="subject"
+                            name="subject"
+                        >
+
+                            <?php foreach ($subjects as $subject): ?>
+
+                                <option
+                                    value="<?= htmlspecialchars($subject['subject']) ?>"
+                                >
+                                    <?= htmlspecialchars($subject['subject']) ?>
+                                </option>
+
+                            <?php endforeach; ?>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="deadline">
+                            締切
+                        </label>
+
+                        <input
+                            type="time"
+                            id="deadline"
+                            name="deadline"
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="start_date">
+                            着手予定日
+                        </label>
+
+                        <input
+                            type="date"
+                            id="start_date"
+                            name="start_date"
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="task_note">
+                            備考
+                        </label>
+
+                        <textarea
+                            id="task_note"
+                            name="task_note"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="schedule-form"
+                    style="display: none;"
                 >
-            </label>
-        </p>
 
-        <p>
-            <label>
-                着手予定日：
-                <input
-                    type="date"
-                    name="start_date"
-                >
-            </label>
-        </p>
+                    <h2>スケジュール</h2>
 
-        <p>
-            <label>
-                備考：
-                <br>
-                <textarea name="task_note"></textarea>
-            </label>
-        </p>
+
+                    <div class="form-item">
+
+                        <label for="schedule_title">
+                            タイトル
+                        </label>
+
+                        <input
+                            type="text"
+                            id="schedule_title"
+                            name="schedule_title"
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label>
+                            時間
+                        </label>
+
+                        <input
+                            type="time"
+                            name="start_time"
+                        >
+
+                        ～
+
+                        <input
+                            type="time"
+                            name="end_time"
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="schedule_note">
+                            備考
+                        </label>
+
+                        <textarea
+                            id="schedule_note"
+                            name="schedule_note"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-buttons">
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        追加
+                    </button>
+
+                    <a
+                        href="date.php?date=<?= urlencode($date) ?>"
+                        class="button back-button"
+                    >
+                        戻る
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
-    <!-- スケジュールの入力欄 -->
 
-    <div
-        id="schedule-form"
-        style="display: none;"
-    >
+    <script>
 
-        <p>
-            <label>
-                タイトル：
-                <input
-                    type="text"
-                    name="schedule_title"
-                >
-            </label>
-        </p>
+        const taskRadio =
+            document.querySelector('input[value="task"]');
 
-        <p>
-            <label>
-                時間：
+        const scheduleRadio =
+            document.querySelector('input[value="schedule"]');
 
-                <input
-                    type="time"
-                    name="start_time"
-                >
+        const taskForm =
+            document.getElementById('task-form');
 
-                ～
+        const scheduleForm =
+            document.getElementById('schedule-form');
 
-                <input
-                    type="time"
-                    name="end_time"
-                >
+        const typeInput =
+            document.getElementById('type');
 
-            </label>
-        </p>
 
-        <p>
-            <label>
-                備考：
-                <br>
-                <textarea name="schedule_note"></textarea>
-            </label>
-        </p>
+        taskRadio.addEventListener('change', function() {
 
-    </div>
+            taskForm.style.display = 'block';
 
-    <button type="submit">
-        追加
-    </button>
+            scheduleForm.style.display = 'none';
 
-</form>
+            typeInput.value = 'task';
 
-<a href="date.php?date=<?= urlencode($date) ?>">
-    戻る
-</a>
+        });
 
-<script>
 
-    const taskRadio =
-        document.querySelector('input[value="task"]');
+        scheduleRadio.addEventListener('change', function() {
 
-    const scheduleRadio =
-        document.querySelector('input[value="schedule"]');
+            taskForm.style.display = 'none';
 
-    const taskForm =
-        document.getElementById('task-form');
+            scheduleForm.style.display = 'block';
 
-    const scheduleForm =
-        document.getElementById('schedule-form');
+            typeInput.value = 'schedule';
 
-    taskRadio.addEventListener('change', function() {
+        });
 
-        taskForm.style.display = 'block';
-
-        scheduleForm.style.display = 'none';
-
-    });
-
-    scheduleRadio.addEventListener('change', function() {
-
-        taskForm.style.display = 'none';
-
-        scheduleForm.style.display = 'block';
-
-    });
-
-</script>
+    </script>
 
 </body>
+
 </html>

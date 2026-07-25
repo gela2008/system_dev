@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } else {
 
-        $error = 'ユーザ名またはパスワードが違います。';
+        $error = 'ユーザー名またはパスワードが違います。';
 
     }
 }
@@ -39,36 +39,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ログイン</title>
+
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <h1>ログイン</h1>
+    <div class="login-container">
 
-    <?php if ($error): ?>
-        <p><?= htmlspecialchars($error) ?></p>
-    <?php endif; ?>
+        <div class="card">
 
-    <form method="post">
+            <h1>ログイン</h1>
 
-        <p>
-            <label>
-                ユーザ名：
-                <input type="text" name="username" required>
-            </label>
-        </p>
+            <?php if ($error): ?>
 
-        <p>
-            <label>
-                パスワード：
-                <input type="password" name="password" required>
-            </label>
-        </p>
+                <p class="error-message">
+                    <?= htmlspecialchars($error) ?>
+                </p>
 
-        <button type="submit">ログイン</button>
+            <?php endif; ?>
 
-    </form>
+            <form method="post">
+
+                <div class="form-group">
+
+                    <label for="username">
+                        ユーザー名
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="password">
+                        パスワード
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                    >
+
+                </div>
+
+                <button type="submit">
+                    ログイン
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </body>
 </html>

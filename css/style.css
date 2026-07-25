@@ -1,15 +1,259 @@
 @charset "utf-8";
 
-/* 全体 */
+/* =========================
+   全体
+========================= */
+
 body {
     margin: 0;
-    padding: 30px;
+    padding: 40px 20px;
     background-color: #f7f8fc;
     font-family: sans-serif;
     color: #333;
 }
 
-/* カレンダー上部 */
+
+/* =========================
+   共通コンテナ
+========================= */
+
+.page-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+
+/* =========================
+   見出し
+========================= */
+
+h1 {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 28px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+
+/* =========================
+   カード
+========================= */
+
+.card {
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d5d8e0;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #ffffff;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #7c8cff;
+    box-shadow: 0 0 0 3px rgba(124, 140, 255, 0.15);
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+button,
+.button {
+    display: inline-block;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    background-color: #667eea;
+    color: #ffffff;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+    opacity: 0.85;
+}
+
+
+/* =========================
+   リンク
+========================= */
+
+a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   戻る・操作ボタン
+========================= */
+
+.action-area {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.back-button {
+    background-color: #888;
+}
+
+.delete-button {
+    background-color: #e05252;
+}
+
+
+/* =========================
+   ログイン・ホーム
+========================= */
+
+.login-container,
+.home-container {
+    max-width: 450px;
+    margin: 80px auto;
+}
+
+
+/* =========================
+   エラーメッセージ
+========================= */
+
+.error-message {
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #ffe5e5;
+    color: #c62828;
+}
+
+
+/* =========================
+   お知らせ
+========================= */
+
+.notice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notice-item {
+    padding: 16px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border-left: 5px solid #667eea;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================
+   タスク一覧
+========================= */
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.task-item a {
+    flex: 1;
+}
+
+
+/* =========================
+   詳細画面
+========================= */
+
+.detail-item {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.detail-label {
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #777;
+}
+
+.detail-value {
+    font-size: 16px;
+}
+
+
+/* =========================
+   ログアウト
+========================= */
+
+.logout-button {
+    background-color: #888;
+}
+
+
+/* =========================
+   カレンダー
+========================= */
+
 .calendar-header {
     display: flex;
     justify-content: center;
@@ -23,7 +267,6 @@ body {
     font-size: 28px;
 }
 
-/* 月切り替えボタン */
 .calendar-header a {
     display: flex;
     justify-content: center;
@@ -42,7 +285,6 @@ body {
     background-color: #eeeeee;
 }
 
-/* カレンダー */
 .calendar {
     width: 100%;
     max-width: 800px;
@@ -56,7 +298,6 @@ body {
     table-layout: fixed;
 }
 
-/* 曜日・日付セル */
 .calendar th,
 .calendar td {
     border-right: 1px solid #e5e5e5;
@@ -76,7 +317,6 @@ body {
     padding: 8px;
 }
 
-/* カレンダーの外側の線を整える */
 .calendar th:last-child,
 .calendar td:last-child {
     border-right: none;
@@ -86,7 +326,6 @@ body {
     border-bottom: none;
 }
 
-/* 日付リンク */
 .calendar td > a {
     display: block;
     color: #333;
@@ -95,44 +334,40 @@ body {
     margin-bottom: 8px;
 }
 
-/* 日付にマウスを乗せたとき */
 .calendar td > a:hover {
     text-decoration: underline;
 }
 
-/* 予定タイトル */
 .calendar td div {
     font-size: 13px;
     text-align: left;
     margin-top: 4px;
     padding: 4px 6px;
     border-radius: 4px;
-
-    /* 長い文字を折り返す */
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-word;
 }
 
-/* タスク */
 .calendar-task {
     background-color: #fff3cd;
     border-left: 4px solid #f0ad4e;
 }
 
-/* スケジュール */
 .calendar-schedule {
     background-color: #d9f0ff;
     border-left: 4px solid #5bc0de;
 }
 
-/* 着手予定 */
 .calendar-start {
     background-color: #ffe0eb;
     border-left: 4px solid #ff8fab;
 }
 
-/* お知らせ */
+
+/* =========================
+   お知らせアイコン
+========================= */
 
 .notice-area {
     width: 100%;
@@ -152,43 +387,39 @@ body {
     position: absolute;
     top: -8px;
     right: -10px;
-
     width: 22px;
     height: 22px;
-
     background-color: red;
     color: white;
-
     border-radius: 50%;
-
     font-size: 13px;
     font-weight: bold;
-
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* 今日の日付 */
+
+/* =========================
+   今日の日付
+========================= */
 
 .calendar td.today > a {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-
     width: 32px;
     height: 32px;
-
     background-color: red;
     color: white;
-
     border-radius: 50%;
-
     text-decoration: none;
 }
 
 
-/* ログアウトボタン */
+/* =========================
+   ログアウトボタン
+========================= */
 
 .logout-area {
     text-align: center;
@@ -197,14 +428,10 @@ body {
 
 .logout-button {
     display: inline-block;
-
     padding: 8px 20px;
-
     background-color: #888;
     color: white;
-
     border-radius: 6px;
-
     text-decoration: none;
 }
 

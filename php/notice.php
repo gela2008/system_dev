@@ -44,6 +44,7 @@ $notices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>お知らせ</title>
 
     <link rel="stylesheet" href="../css/style.css">
@@ -51,111 +52,152 @@ $notices = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 
-    <h1>お知らせ</h1>
+    <div class="page-container">
 
-    <?php if (empty($notices)): ?>
+        <h1>お知らせ</h1>
 
-        <p>現在、お知らせはありません。</p>
+        <?php if (empty($notices)): ?>
 
-    <?php else: ?>
+            <div class="card">
 
-        <?php foreach ($notices as $notice): ?>
+                <p>
+                    現在、お知らせはありません。
+                </p>
 
-            <?php if ($notice['subject'] !== null): ?>
+            </div>
 
-                <?php if ($notice['start_date'] === $today): ?>
+        <?php else: ?>
 
-                    <p>
-                        📝 今日着手予定の課題があります：
-                        <?= htmlspecialchars($notice['title']) ?>
-                        （<?= htmlspecialchars($notice['subject']) ?>）
-                    </p>
+            <div class="notice-list">
 
-                <?php elseif ($notice['date'] === $today): ?>
+                <?php foreach ($notices as $notice): ?>
 
-                    <p>
-                        ⚠️ 今日締切の課題があります：
-                        <?= htmlspecialchars($notice['title']) ?>
-                        （<?= htmlspecialchars($notice['subject']) ?>）
-                    </p>
+                    <?php if ($notice['subject'] !== null): ?>
 
-                <?php elseif ($notice['date'] === $tomorrow): ?>
+                        <?php if ($notice['start_date'] === $today): ?>
 
-                    <p>
-                        ⏰ 明日締切の課題があります：
-                        <?= htmlspecialchars($notice['title']) ?>
-                        （<?= htmlspecialchars($notice['subject']) ?>）
-                    </p>
+                            <div class="notice-item">
 
-                <?php endif; ?>
+                                📝
+                                今日着手予定の課題があります：
 
-            <?php else: ?>
+                                <?= htmlspecialchars($notice['title']) ?>
 
-                <?php if ($notice['date'] === $today): ?>
+                                （<?= htmlspecialchars($notice['subject']) ?>）
 
-                    <p>
-                        📅 今日の予定があります：
-                        <?= htmlspecialchars($notice['title']) ?>
+                            </div>
 
-                        <?php if (!empty($notice['time'])): ?>
+                        <?php elseif ($notice['date'] === $today): ?>
 
-                            （<?= htmlspecialchars($notice['time']) ?>
+                            <div class="notice-item">
 
-                            <?php if (!empty($notice['end_time'])): ?>
+                                ⚠️
+                                今日締切の課題があります：
 
-                                ～<?= htmlspecialchars($notice['end_time']) ?>
+                                <?= htmlspecialchars($notice['title']) ?>
 
-                            <?php else: ?>
+                                （<?= htmlspecialchars($notice['subject']) ?>）
 
-                                ～
+                            </div>
 
-                            <?php endif; ?>
+                        <?php elseif ($notice['date'] === $tomorrow): ?>
 
-                            ）
+                            <div class="notice-item">
 
-                        <?php endif; ?>
+                                ⏰
+                                明日締切の課題があります：
 
-                    </p>
+                                <?= htmlspecialchars($notice['title']) ?>
 
-                <?php elseif ($notice['date'] === $tomorrow): ?>
+                                （<?= htmlspecialchars($notice['subject']) ?>）
 
-                    <p>
-                        📅 明日の予定があります：
-                        <?= htmlspecialchars($notice['title']) ?>
-
-                        <?php if (!empty($notice['time'])): ?>
-
-                            （<?= htmlspecialchars($notice['time']) ?>
-
-                            <?php if (!empty($notice['end_time'])): ?>
-
-                                ～<?= htmlspecialchars($notice['end_time']) ?>
-
-                            <?php else: ?>
-
-                                ～
-
-                            <?php endif; ?>
-
-                            ）
+                            </div>
 
                         <?php endif; ?>
 
-                    </p>
+                    <?php else: ?>
 
-                <?php endif; ?>
+                        <?php if ($notice['date'] === $today): ?>
 
-            <?php endif; ?>
+                            <div class="notice-item">
 
-        <?php endforeach; ?>
+                                📅
+                                今日の予定があります：
 
-    <?php endif; ?>
+                                <?= htmlspecialchars($notice['title']) ?>
 
-    <p>
-        <a href="index.php?year=<?= $currentYear ?>&month=<?= $currentMonth ?>">
-            カレンダーへ戻る
-        </a>
-    </p>
+                                <?php if (!empty($notice['time'])): ?>
+
+                                    （<?= htmlspecialchars($notice['time']) ?>
+
+                                    <?php if (!empty($notice['end_time'])): ?>
+
+                                        ～<?= htmlspecialchars($notice['end_time']) ?>
+
+                                    <?php else: ?>
+
+                                        ～
+
+                                    <?php endif; ?>
+
+                                    ）
+
+                                <?php endif; ?>
+
+                            </div>
+
+                        <?php elseif ($notice['date'] === $tomorrow): ?>
+
+                            <div class="notice-item">
+
+                                📅
+                                明日の予定があります：
+
+                                <?= htmlspecialchars($notice['title']) ?>
+
+                                <?php if (!empty($notice['time'])): ?>
+
+                                    （<?= htmlspecialchars($notice['time']) ?>
+
+                                    <?php if (!empty($notice['end_time'])): ?>
+
+                                        ～<?= htmlspecialchars($notice['end_time']) ?>
+
+                                    <?php else: ?>
+
+                                        ～
+
+                                    <?php endif; ?>
+
+                                    ）
+
+                                <?php endif; ?>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                    <?php endif; ?>
+
+                <?php endforeach; ?>
+
+            </div>
+
+        <?php endif; ?>
+
+
+        <div class="action-area">
+
+            <a
+                href="index.php?year=<?= $currentYear ?>&month=<?= $currentMonth ?>"
+                class="button"
+            >
+                カレンダーへ戻る
+            </a>
+
+        </div>
+
+    </div>
 
 </body>
 </html>
