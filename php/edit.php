@@ -63,117 +63,191 @@ if (!$todo) {
 
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>編集</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
 </head>
 
 <body>
 
-    <h1>編集</h1>
+    <div class="page-container">
 
-    <form action="edit.php?id=<?= $todo['id'] ?>" method="post">
+        <div class="edit-card">
 
-    <?php if ($todo['subject'] !== null): ?>
+            <h1>編集</h1>
 
-        <!-- タスクの編集 -->
-        <h2>タスク</h2>
 
-        <p>
-            <label>
-                タイトル：
-                <input
-                    type="text"
-                    name="title"
-                    value="<?= htmlspecialchars($todo['title']) ?>"
-                >
-            </label>
-        </p>
+            <form
+                action="edit.php?id=<?= $todo['id'] ?>"
+                method="post"
+            >
 
-        <p>
-            <label>
-                科目：
-                <?= htmlspecialchars($todo['subject']) ?>
-            </label>
-        </p>
+                <?php if ($todo['subject'] !== null): ?>
 
-        <p>
-            <label>
-                締切：
-                <input
-                    type="time"
-                    name="time"
-                    value="<?= htmlspecialchars($todo['time']) ?>"
-                >
-            </label>
-        </p>
+                    <h2>タスク</h2>
 
-        <p>
-            <label>
-                着手予定日：
-                <input
-                    type="date"
-                    name="start_date"
-                    value="<?= htmlspecialchars($todo['start_date']) ?>"
-                >
-            </label>
-        </p>
 
-        <p>
-            <label>
-                備考：
-                <br>
-                <textarea name="note"><?= htmlspecialchars($todo['note']) ?></textarea>
-            </label>
-        </p>
+                    <div class="form-item">
 
-    <?php else: ?>
+                        <label for="title">
+                            タイトル
+                        </label>
 
-        <!-- スケジュールの編集 -->
-        <h2>スケジュール</h2>
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value="<?= htmlspecialchars($todo['title']) ?>"
+                            required
+                        >
 
-        <p>
-            <label>
-                タイトル：
-                <input
-                    type="text"
-                    name="title"
-                    value="<?= htmlspecialchars($todo['title']) ?>"
-                >
-            </label>
-        </p>
+                    </div>
 
-        <p>
-            <label>
-                時間：
-                <input
-                    type="time"
-                    name="time"
-                    value="<?= htmlspecialchars($todo['time']) ?>"
-                >
-            </label>
-        </p>
 
-        <p>
-            <label>
-                備考：
-                <br>
-                <textarea name="note"><?= htmlspecialchars($todo['note']) ?></textarea>
-            </label>
-        </p>
+                    <div class="form-item">
 
-            <?php endif; ?>
+                        <label>
+                            科目
+                        </label>
 
-    <button type="submit">保存</button>
+                        <p class="readonly-value">
+                            <?= htmlspecialchars($todo['subject']) ?>
+                        </p>
 
-    </form>
+                    </div>
 
-    <p>
-        <a href="detail.php?id=<?= $todo['id'] ?>">
-            戻る
-        </a>
-    </p>
+
+                    <div class="form-item">
+
+                        <label for="time">
+                            締切
+                        </label>
+
+                        <input
+                            type="time"
+                            id="time"
+                            name="time"
+                            value="<?= htmlspecialchars($todo['time']) ?>"
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="start_date">
+                            着手予定日
+                        </label>
+
+                        <input
+                            type="date"
+                            id="start_date"
+                            name="start_date"
+                            value="<?= htmlspecialchars($todo['start_date']) ?>"
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="note">
+                            備考
+                        </label>
+
+                        <textarea
+                            id="note"
+                            name="note"
+                        ><?= htmlspecialchars($todo['note']) ?></textarea>
+
+                    </div>
+
+
+                <?php else: ?>
+
+                    <h2>スケジュール</h2>
+
+
+                    <div class="form-item">
+
+                        <label for="title">
+                            タイトル
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value="<?= htmlspecialchars($todo['title']) ?>"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="time">
+                            時間
+                        </label>
+
+                        <input
+                            type="time"
+                            id="time"
+                            name="time"
+                            value="<?= htmlspecialchars($todo['time']) ?>"
+                        >
+
+                    </div>
+
+
+                    <div class="form-item">
+
+                        <label for="note">
+                            備考
+                        </label>
+
+                        <textarea
+                            id="note"
+                            name="note"
+                        ><?= htmlspecialchars($todo['note']) ?></textarea>
+
+                    </div>
+
+                <?php endif; ?>
+
+
+                <div class="form-buttons">
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        保存
+                    </button>
+
+                    <a
+                        href="detail.php?id=<?= $todo['id'] ?>"
+                        class="button back-button"
+                    >
+                        戻る
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </body>
+
 </html>

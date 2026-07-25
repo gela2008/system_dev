@@ -7,6 +7,20 @@ if (!isset($_SESSION['student_id'])) {
     exit;
 }
 
+include "db.php";
+
+$stmt = $db->prepare(
+    "SELECT grade
+     FROM user
+     WHERE student_id = ?"
+);
+
+$stmt->execute([
+    $_SESSION['student_id']
+]);
+
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -14,38 +28,55 @@ if (!isset($_SESSION['student_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ホーム</title>
+
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <h1>ホーム</h1>
+    <div class="home-container">
 
-    <p>ログインに成功しました！</p>
+        <div class="card">
 
-    <p>学籍番号：<?= htmlspecialchars($_SESSION['student_id']) ?></p>
+            <h1>ホーム</h1>
 
-    <?php
-    
-    include "db.php";
-    
-    $stmt = $db->prepare(
-        "SELECT grade FROM user WHERE student_id = ?"
-        );
-        
-    $stmt->execute([$_SESSION['student_id']]);
+            <p>
+                ログインに成功しました！
+            </p>
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            <p>
+                学籍番号：
+                <?= htmlspecialchars($_SESSION['student_id']) ?>
+            </p>
 
-    ?>
+            <p>
+                学年：
+                <?= htmlspecialchars($user['grade']) ?>年
+            </p>
 
-<p>学年：<?= htmlspecialchars($user['grade']) ?>年</p>
+            <div class="action-area">
 
-    <a href="index.php">カレンダーへ</a>
+                <a
+                    href="index.php"
+                    class="button"
+                >
+                    カレンダーへ
+                </a>
 
-<p>
-    <a href="logout.php">ログアウト</a>
-</p>
+                <a
+                    href="logout.php"
+                    class="button logout-button"
+                >
+                    ログアウト
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
 </html>
